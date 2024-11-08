@@ -1,0 +1,81 @@
+.describe1 {
+  width: 80%;
+  border: 2px solid black;
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.anserInfo {
+  width: 80%;
+  margin-left: 10%;
+  margin-bottom: 15px;
+
+  font-size: large;
+  font-weight: bold;
+
+
+
+  .name{
+    input {
+      width: 200px;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+  }
+
+  .phone {
+    input {
+      width: 200px;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+  }
+
+  .email {
+    input {
+      width: 400px;
+      border-radius: 10px;
+      margin-left: 10px;
+    }
+  }
+
+  .age {
+    input {
+      width: 100px;
+      margin-left: 10px;
+      border-radius: 10px;
+    }
+  }
+}
+
+.questionsZone {
+  width: 80%;
+  border: 1px solid black;
+  margin: 0 auto;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.checkZone {
+  width: 80%;
+  margin: 0 auto;
+
+  .cancel {
+    border-radius: 10px;
+
+    :hover {
+      background-color: red;
+    }
+
+  }
+
+  .confirm {
+    border-radius: 10px;
+
+    :hover {
+      background-color: yellow;
+    }
+  }
+
+}

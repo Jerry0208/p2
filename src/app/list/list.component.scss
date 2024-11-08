@@ -1,0 +1,63 @@
+
+.mode{
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.masterMode {
+  color: red;
+}
+.normalMode{
+  color: red;
+}
+
+.search_box {
+  width: 1400px;
+  height: 170px;
+  border: solid black;
+  padding: 30px;
+  background-color:#f2f2f2;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 auto;
+
+
+  .search_name {
+    width: 800px;
+    margin-bottom: 5px;
+    margin-left: 25px;
+
+    .list_name{
+      margin-left: 10px;
+      width: 650px;
+    }
+  }
+
+
+  .search_date{
+    width: 100%;
+    margin-left: 25px;
+    .data_s{
+      margin-left: 10px;
+      margin-right: 25px;
+      height: 35px;
+      width: 25%;
+    }
+    .data_e{
+      margin-left: 25px;
+      margin-right: 65px;
+      height: 35px;
+      width: 25%;
+    }
+  }
+}
+
+.list2{
+  width:1400px ;
+  margin: 0 auto;
+}
+
+.changePage{
+margin-top: -10px;
+}
+
+

@@ -1,0 +1,59 @@
+<div class="date d-flex justify-content-end">
+  <p>2024-07-01~2024-10-30</p>
+</div>
+<div class="topic d-flex justify-content-center">
+  <h1>年度調查01</h1>
+</div>
+
+<div class="describe1">
+  <h5>
+    這份年度調查的說明將重點描述我們的主要目標：透過蒐集參與者的意見與經驗，了解在過去一年中，各種領域的趨勢與變化。調查的結果將提供有關使用者行為、偏好、挑戰和滿意度的深入見解，並為未來的決策和發展提供數據支援。參與者的回饋將被嚴格保密並僅用於研究目的，以確保資料的完整性和參與者的隱私。調查結果將於報告中公佈，以利更廣泛的應用並推動各項策略的有效實施。
+  </h5>
+</div>
+<br>
+<form [formGroup]="form">
+  <div class="anserInfo d-flex justify-content-evenly flex-wrap">
+    <div class="name flex-fill">
+      <label>姓名:</label><input type="text" formControlName="name"><!-- [(ngModel)]="userData.name" -->
+    </div>
+    <div class="phone flex-fill">
+      <label>電話:</label><input type="text" formControlName="phone"><!-- [(ngModel)]="userData.phone" -->
+    </div>
+    <div class="email flex-fill">
+      <label>電子信箱:</label><input type="email" formControlName="email"><!-- [(ngModel)]="userData.email" -->
+    </div>
+    <div class="age flex-fill">
+      <label>年齡:</label><input type="text" formControlName="age"><!-- [(ngModel)]="userData.age" -->
+    </div>
+  </div>
+  <!--  --------------------------------------------------------------------------------------------------------- -->
+  <div class="questionsZone">
+
+    <div *ngFor="let question of questions">
+      <p>{{ question.text }}</p>
+      <!-- 單選和複選選項 -->
+      <ng-container *ngIf="question.type === 'radio' || question.type === 'checkbox'">
+        <label *ngFor="let option of question.options">
+          <input *ngIf="question.type === 'radio'" type="radio" [formControlName]="question.name" [name]="question.name"
+            [value]="option">
+          <input *ngIf="question.type === 'checkbox'" type="checkbox" [name]="question.name" value="{{option}}"
+            [formControlName]="question.name" (change)="onCheckboxChange(question.text,option, $event)">
+          {{ option }}
+        </label>
+      </ng-container>
+
+      <!-- 文字區域 -->
+      <ng-container *ngIf="question.type === 'textarea'">
+        <textarea [name]="question.name" rows="5" cols="60" [formControlName]="question.name">
+      </textarea>
+      </ng-container>
+      <br><br>
+    </div>
+  </div>
+</form>
+<div class="checkZone d-flex justify-content-end">
+  <button type="button" class="cancel" (click)="backList()">取消</button>
+  <!-- 增加判定必選選項的判定 -->
+  <button type="button" class="confirm" [disabled]="!form.valid" (click)="submitSurvey()">確認</button>
+</div>
+<hr>
