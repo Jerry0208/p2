@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NewQuest } from '../service/newQuest.service';
+import { ControlTabComponent } from '../control-tab/control-tab.component';
 
 @Component({
   selector: 'app-add-list',
@@ -10,62 +12,85 @@ import { Router } from '@angular/router';
   styleUrl: './add-list.component.scss'
 })
 export class AddListComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router, private quesTemp: NewQuest, private tabLink: ControlTabComponent) { }
+
+  //問卷名、問卷描述
+  title !: string;
+  explain!: string;
+
+  //開始和結束日期
+  sDate = '';
+  eDate = ''
 
   //日期選擇範圍 : 當日 ~ 選擇日期
   toDay = new Date();
-  //grtMonth 回傳範圍 : 0 ~ 11 對應 1 ~ 12 月
-  mon: number = this.toDay.getMonth() + 1;
-  //getDate 回傳當日日期，日期小於10時會回傳單位數
-  date: number = this.toDay.getDate();
   defaultDate: string = "";
 
   //在頁面開啟時
   ngOnInit(): void {
-
-    let mon: string;
-    let date: string;
+    //grtMonth 回傳範圍 : 0 ~ 11 對應 1 ~ 12 月
+    let monNum: number = this.toDay.getMonth() + 1;
+    //getDate 回傳當日日期，日期小於10時會回傳單位數
+    let dateNum: number = this.toDay.getDate();
+    let monStr: string;
+    let dateStr: string;
 
     //判斷月份
-    if (this.mon < 10) {
-      mon = "0" + (this.mon)
+    if (monNum < 10) {
+      monStr = "0" + (monNum)
     } else {
-      mon = this.mon.toString();
+      monStr = monNum.toString();
     }
 
     //判斷日期
-    if (this.date < 10) {
-      date = "0" + (this.date)
+    if (dateNum < 10) {
+      dateStr = "0" + (dateNum)
     } else {
-      date = this.date.toString();
+      dateStr = dateNum.toString();
     }
     // <input  type : date> 接收日期格式 : yyyy-mm-dd
-    this.defaultDate = this.toDay.getFullYear() + "-" + mon + "-" + date;
+    this.defaultDate = this.toDay.getFullYear() + "-" + monStr + "-" + dateStr;
+
+    //判定是否為修改問卷
+    this.reset()
   }
 
-  // ngAfterContentInit() {
-  //   if (this.mon <= 10) {
-  //     this.mon_s = "0" + (this.mon + 1)
-  //   } else {
-  //     this.mon_s = this.mon.toString();
-  //   }
-  //   if (this.date < 10) {
-  //     this.date_s = "0" + (this.date)
-  //   } else {
-  //     this.date_s = this.date.toString();
-  //   }
-
-  //
-  // }
+  //判定是否為修改問卷
+  reset() {
+    if (this.quesTemp) {
+      this.title = this.quesTemp.title;
+      this.explain = this.quesTemp.explain;
+      this.sDate = this.quesTemp.sDate;
+      this.eDate = this.quesTemp.eDate;
+      this.eDateMaker = false;
+    }
+  }
 
 
-  stratDate = '';
-  endDate = ''
+  //防止顯選結束日期後再選開始日期
+  eDateMaker = true
+  sDateDetector() {
+    if (this.sDate) {
+      this.eDateMaker = false
+    }
+  }
 
+  //返回List
   backList() {
     this.router.navigate(['/list'])
+    this.quesTemp.reset()
   }
 
-
+  //設定問卷基本資訊，後前往下一頁撰寫問卷問題
+  next() {
+    //問卷基本資訊
+    this.quesTemp.title = this.title;
+    this.quesTemp.explain = this.explain;
+    this.quesTemp.sDate = this.sDate;
+    this.quesTemp.eDate = this.eDate;
+    //讓上方 tab 隨著換頁移動
+    this.tabLink.switchTab('/control_tab/add_list2')
+    this.router.navigateByUrl('/control_tab/add_list2')
+  }
 
 }

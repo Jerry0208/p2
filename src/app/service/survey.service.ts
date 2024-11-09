@@ -7,4 +7,8 @@ import { Injectable } from '@angular/core';
 })
 export class SurveyService {
   questData :any;
+
+  reset(){
+    this.questData = null
+  }
 }

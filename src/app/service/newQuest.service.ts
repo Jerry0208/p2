@@ -5,36 +5,72 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 
-//之後這個可以做為問卷的收發的 interface 和 class
-//先放置 =)
+//問卷收發的 interface 和 class
+// 沒有Id 是因為 SQL 會自動生成
 
 
-export class newQuet implements QuetTem {
+export class NewQuest implements QuestData, QuestArray {
   //問卷基本資訊
-  id!: number;
-  name!: string;
-  des!: string;
+  //問卷名
+  title!: string;
+  //問卷描述
+  explain!: string;
+  //狀態
   status!: string;
+  //起迄日期
   sDate!: string;
   eDate!: string;
   //問卷內容
+  questArray!: Array<QuestArray>;
+
+  //問卷內容
+  //問題的ID
   questId!: number;
-  text!: string;
+  //必填欄位
   need!: boolean;
-  options!: Array<JSON>;
+  //問題名
+  questName!: string;
+  //問題類型
+  type!: string;
+
+  //題目 (短述題為空值)
+  options!: JSON[];
+
+  reset() {
+    this.title = '';
+    this.explain = '';
+    this.status = '';
+    this.sDate = '';
+    this.eDate = '';
+    this.questArray = [];
+  }
 }
 
-interface QuetTem {
-  id: number;
-  name: string;
-  des: string;
+//問卷基本資訊
+interface QuestData {
+  //問卷名
+  title: string;
+  //問卷描述
+  explain: string;
+  //狀態
   status: string;
+  //起迄日期
   sDate: string;
   eDate: string;
   //問卷內容
-  questId: number;
-  text: string;
-  need: boolean;
-  options: Array<JSON>;
+  questArray: Array<QuestArray>;
+}
 
+//問卷內容
+interface QuestArray {
+  //問題的ID
+  questId: number;
+  //必填欄位
+  need: boolean;
+  //問題名
+  questName: string;
+  //問題類型
+  type: string;
+  //題目 (短述題為空值)
+  options: Array<JSON>;
 }

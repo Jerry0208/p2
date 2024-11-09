@@ -20,6 +20,7 @@ import { Router } from '@angular/router';//前往下一個畫面用
 export class AnserPageRefreashComponent {
   // 多選:M 單選:S 文字輸入:T
   quest = {
+    id: 1,
     title: '範例問卷標題',
     sDate: '2024/10/01',
     eDate: '2024/12/25',

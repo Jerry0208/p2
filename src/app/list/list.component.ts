@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';//icon
 import { MatPaginator } from '@angular/material/paginator';//list換頁用
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';// table
 import { RouterLink, RouterLinkActive } from '@angular/router';//router
+import { ControlTabComponent } from '../control-tab/control-tab.component';
 
 
 export interface PeriodicElement {
@@ -32,6 +33,7 @@ export interface PeriodicElement {
 
 
 export class ListComponent implements AfterViewInit {
+
   //假資料
   listData: PeriodicElement[] = [
     {
