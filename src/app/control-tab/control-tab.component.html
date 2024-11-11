@@ -8,7 +8,8 @@
       [routerLink]="link.path"
       [active]="activeLink == link.path"> {{link.name}} </a>
   }
-  <!-- <a mat-tab-link disabled>Disabled Link</a> 隱藏頁面 -->
+  <!-- 隱藏頁面 -->
+  <!-- <a mat-tab-link [disabled]="true">Disabled Link</a> -->
 </nav>
 
 <mat-tab-nav-panel #tabPanel>

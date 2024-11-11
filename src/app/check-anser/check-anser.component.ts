@@ -16,8 +16,6 @@ export class CheckAnserComponent {
 
   ngOnInit() {
     this.quest = this.surveyService.questData; // 獲取回答
-    console.log( this.quest);
-
   }
 
   backPage(){
@@ -26,7 +24,8 @@ export class CheckAnserComponent {
 
   goLsit(){
     alert("感謝您回答問卷")
-    this.router.navigateByUrl('/list')
+    this.surveyService.reset();
+    this.router.navigateByUrl('/list');
   }
 
 }

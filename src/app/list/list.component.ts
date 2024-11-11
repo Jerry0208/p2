@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';//icon
 import { MatPaginator } from '@angular/material/paginator';//list換頁用
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';// table
 import { RouterLink, RouterLinkActive } from '@angular/router';//router
-import { ControlTabComponent } from '../control-tab/control-tab.component';
 
 
 export interface PeriodicElement {
@@ -17,9 +16,6 @@ export interface PeriodicElement {
   sDate: string;
   eDate: string;
 }
-
-
-
 
 
 @Component({
@@ -33,6 +29,13 @@ export interface PeriodicElement {
 
 
 export class ListComponent implements AfterViewInit {
+
+  //日期選擇範圍
+  startDate: string = ""
+  endDate: string = ""
+
+  //管理者模式
+  mode: boolean = false;
 
   //假資料
   listData: PeriodicElement[] = [
@@ -138,13 +141,6 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.paginator._intl.lastPageLabel = "最後一頁"
   }
 
-  //日期選擇範圍
-  startDate: string = ""
-  endDate: string = ""
-
-  //管理者模式
-  mode: boolean = false;
-
   masterMode() {
     this.mode = true
     this.displayedColumns = ['select', 'id', 'name', 'status', 'sDate', 'eDate', 'statistics']
@@ -170,10 +166,20 @@ export class ListComponent implements AfterViewInit {
     }
   }
 
+    //刪除列表
+    deleteSelectedRows() {
+      // 濾除被選取的資料列
+      this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
+
+      // 更新 dataSource.data
+      this.dataSource.data = this.dataSource.data;
+
+      // 清除選取狀態
+      this.selection.clear();
+    }
+
 
   //模糊搜尋:只能搜尋到由API接過來的資料，沒辦法搜尋到資料庫所有資料
-
-
   //即時模糊搜尋功能 By input event
   changeInput(event: Event) {
     let data: PeriodicElement[] = []
@@ -202,12 +208,9 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.data = data
   }
 
-  //日期判斷
-  // let startDate = new Date(this.startDate)
-  // let endDate = new Date(this.endDate)
-
   //取得問卷資訊(之後要傳到後台)
   quesInfo(element: Element) {
     console.log(element);
   }
+
 }

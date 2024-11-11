@@ -51,13 +51,18 @@ export class AddListComponent {
     // <input  type : date> 接收日期格式 : yyyy-mm-dd
     this.defaultDate = this.toDay.getFullYear() + "-" + monStr + "-" + dateStr;
 
+    console.log(this.quesTemp);
     //判定是否為修改問卷
     this.reset()
+
+
   }
 
   //判定是否為修改問卷
   reset() {
-    if (this.quesTemp) {
+    if (!this.quesTemp.title && !this.quesTemp.explain && !this.quesTemp.sDate && !this.quesTemp.eDate) {
+      this.eDateMaker = true;
+    }else{
       this.title = this.quesTemp.title;
       this.explain = this.quesTemp.explain;
       this.sDate = this.quesTemp.sDate;
@@ -81,8 +86,35 @@ export class AddListComponent {
     this.quesTemp.reset()
   }
 
+  checkForm(){
+    if(!this.title){
+      alert('請填寫問卷名稱')
+      return false
+    }
+
+    if(!this.explain){
+      alert('請填寫問卷描述')
+      return false
+    }
+
+    if(!this.sDate){
+      alert('請選擇問卷開始日期')
+      return false
+    }
+
+    if(!this.eDate){
+      alert('請選擇問卷結束日期')
+      return false
+    }
+
+    return true
+  }
+
   //設定問卷基本資訊，後前往下一頁撰寫問卷問題
   next() {
+    if(!this.checkForm()){
+      return
+    }
     //問卷基本資訊
     this.quesTemp.title = this.title;
     this.quesTemp.explain = this.explain;

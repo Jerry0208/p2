@@ -28,8 +28,9 @@
  }
 <br>
 <!-- 問卷預覽 : 問卷題目、問卷類型、題目數量、再編輯題目功能、刪除題目(+確認畫面) -->
+@if(!rewriteMode){
 <mat-icon aria-hidden="delete" fontIcon="delete" style="cursor: pointer;" (click)="deleteSelectedRows()"></mat-icon>
-
+}
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <!-- Checkbox Column -->
@@ -47,9 +48,9 @@
   </ng-container>
 
   <!-- id  Column-->
-  <ng-container matColumnDef="id">
+  <ng-container matColumnDef="questId">
     <th mat-header-cell *matHeaderCellDef> 編號 </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.questId}} </td>
   </ng-container>
 
   <!-- name Column -->
@@ -88,9 +89,7 @@
 </table>
 
 <input type="button" value="上一步" (click)="backAddList1()">
-<input type="submit" value="console log" (click)="toCheck()">
+<input type="submit" value="預覽" (click)="toCheck()">
 
 <!-- 取消畫面(+確認畫面)-->
 
-<!-- 前往畫面預覽 -->
-<button mat-button (click)="openDialog()">test</button>

@@ -7,13 +7,10 @@ import { SelectionModel } from '@angular/cdk/collections';// Table 選取功能
 import { Router } from '@angular/router';
 import { NewQuest } from '../service/newQuest.service';//service
 import { ControlTabComponent } from '../control-tab/control-tab.component';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';//Dialog
-import { MatButtonModule } from '@angular/material/button';//Dialog
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';//Dialog
-import { CheckQuestionComponent } from '../check-question/check-question.component';
+import { Component } from '@angular/core';
 
 export interface questionTemp {
-  id: number;
+  questId: number;
   questName: string;
   need: boolean;
   type: string;
@@ -29,39 +26,38 @@ export interface questionTemp {
     MatIconModule,
     MatTableModule,
     MatCheckboxModule,
-    MatButtonModule,
-    MatDialogModule,
   ],
   templateUrl: './add-list2.component.html',
   styleUrl: './add-list2.component.scss',
-  //Dialog
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 
 
 export class AddList2Component {
-  constructor(private router: Router, private quesTemp: NewQuest, private tabLink: ControlTabComponent) { }
+  constructor(private router: Router, private newQuest: NewQuest, private tabLink: ControlTabComponent,private quesTemp: NewQuest) { }
 
-  //Dialof
-  readonly dialog = inject(MatDialog);
 
-  openDialog() {
-    const dialogRef = this.dialog.open(CheckQuestionComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+  ngOnInit(): void {
+    this.tabLink.switchTab('/control_tab/add_list2')
+    //把寫好的資料放回去
+    this.reset()
   }
 
+  reset() {
+    if (this.quesTemp) {
+      this.dataSource.data = this.quesTemp.questArray
+    }
+  }
+
+
   //table
-  displayedColumns: string[] = ['select', 'id', 'questName', 'type', 'options', 'need', 'rewrite'];
+  displayedColumns: string[] = ['select', 'questId', 'questName', 'type', 'options', 'need', 'rewrite'];
   dataSource = new MatTableDataSource<questionTemp>();
   //table selection
   selection = new SelectionModel<questionTemp>(true, []);
 
   //接資料 ngModle
-  id: number = 0;
+  questId: number = 0;
   questName !: string;
   need: boolean = false;
   type !: string;
@@ -78,11 +74,9 @@ export class AddList2Component {
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    }
-
-    this.selection.select(...this.dataSource.data);
+    this.isAllSelected() ?
+    this.selection.clear() :
+    this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
@@ -90,7 +84,7 @@ export class AddList2Component {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.questId + 1}`;
   }
 
   //刪除列表
@@ -98,36 +92,36 @@ export class AddList2Component {
     // 濾除被選取的資料列
     this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
 
-    // 更新 dataSource.data 並
+    // 更新 dataSource.data
     this.dataSource.data = this.dataSource.data;
     // 清除選取狀態
     this.selection.clear();
 
-    // ID重新排序
+    // questId重新排序
     this.dataSource.data = this.dataSource.data.map((element, index) => ({
       ...element,
-      id: index + 1
+      questId: index + 1
     }))
 
-    //ID數字更新為當前長度
-    this.id = this.dataSource.data.length;
+    //questId數字更新為當前長度
+    this.questId = this.dataSource.data.length;
   }
 
 
   //將寫好的資料加入 Table 中
   addRow() {
 
-    //判斷是否都已填寫
+    // 判斷是否都已填寫
     if (this.formNotComplete()) {
       return
     }
 
     //.replace(/\s/g, "") 去除空白建,再以.split(";")分割
     let options = this.options.replace(' ', "").split(";");
-    //ID 增加
-    this.id += 1;
+    //questId 增加
+    this.questId += 1;
     //將newQues 放入 Table 內
-    let newQues = { id: this.id, questName: this.questName, need: this.need, type: this.type, options: options };
+    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: options };
 
     //失敗 可能要問老師
     // ELEMENT_DATA.push(newQues)
@@ -147,7 +141,7 @@ export class AddList2Component {
   //再編輯
   rewrite(element: any) {
     //把值透過 ngModle 放回畫面上
-    this.id = element.id;
+    this.questId = element.questId;
     this.questName = element.questName;
     this.type = element.type;
     this.need = element.need;
@@ -177,12 +171,12 @@ export class AddList2Component {
     let options = this.options.replace(/\s/g, "").split(";");
 
     //將newQues 放入 Table 內
-    let newQues = { id: this.id, questName: this.questName, need: this.need, type: this.type, options: options };
+    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: options };
 
     //失敗 可能要問老師
     // ELEMENT_DATA.push(newQues)
     // this.dataSource = ELEMENT_DATA
-    this.dataSource.data = this.dataSource.data.filter(data => !(data.id == (this.id)));
+    this.dataSource.data = this.dataSource.data.filter(data => !(data.questId == (this.questId)));
     //將數據放入Table內
     this.dataSource.data = [...this.dataSource.data, newQues];
     //重新排列 方法細節在下方
@@ -193,7 +187,7 @@ export class AddList2Component {
     this.type = '';
     this.need = false;
     this.options = '';
-    this.id = this.dataSource.data.length;
+    this.questId = this.dataSource.data.length;
     this.rewriteMode = false;
   }
 
@@ -202,12 +196,12 @@ export class AddList2Component {
     //從 datasource 將資料取來排序後放回 dataSource
     //.sort ((a,b) => {}) 另一種寫法 與 function 作用一樣
     this.dataSource.data = this.dataSource.data.sort(function (a, b) {
-      //如果 a 的 id 比 b 的 id 小 : 就退位
-      if (a.id < b.id) {
+      //如果 a 的 questId 比 b 的 questId 小 : 就退位
+      if (a.questId < b.questId) {
         return -1;
       }
-      //如果 a 的 id 比 b 的 id 小 : 就進位
-      if (a.id > b.id) {
+      //如果 a 的 questId 比 b 的 questId 小 : 就進位
+      if (a.questId > b.questId) {
         return 1;
       }
       return 0;
@@ -245,8 +239,11 @@ export class AddList2Component {
   }
 
   toCheck() {
-    // this.router.navigateByUrl('')
     console.log(this.dataSource.data);
+    this.newQuest.questArray = this.dataSource.data;
+    console.log(this.newQuest);
+
+    this.router.navigateByUrl('/check_question')
   }
 
 }

@@ -18,6 +18,17 @@ import { Router } from '@angular/router';//前往下一個畫面用
 })
 
 export class AnserPageRefreashComponent {
+
+  //新陣列
+  newQuestArray: Array<any> = [];
+  //複選題資料
+  radioData!: string;
+  //用戶基本資料
+  userName!: string;
+  userPhone!: string;
+  userEmail!: string;
+  userAge!: string;
+
   // 多選:M 單選:S 文字輸入:T
   quest = {
     id: 1,
@@ -80,16 +91,6 @@ export class AnserPageRefreashComponent {
     ]
   }
 
-  //新陣列
-  newQuestArray: Array<any> = [];
-  //複選題資料
-  radioData!: string;
-  //用戶基本資料
-  userName!: string;
-  userPhone!: string;
-  userEmail!: string;
-  userAge!: string;
-
   constructor(
     // 當問卷回答完後要將以獲得的資料傳入 service 中，之後在預覽畫面中呈現
     private questService: SurveyService,
@@ -107,6 +108,7 @@ export class AnserPageRefreashComponent {
       this.userAge = this.questService.questData.userAge;
       this.newQuestArray = this.questService.questData.questArray;
     }
+
   }
 
 
