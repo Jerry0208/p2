@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NewQuest } from '../service/newQuest.service';
 import { ControlTabComponent } from '../control-tab/control-tab.component';
+import { QuesStatus } from '../service/quesStatus.service';
 
 @Component({
   selector: 'app-add-list',
@@ -12,7 +13,7 @@ import { ControlTabComponent } from '../control-tab/control-tab.component';
   styleUrl: './add-list.component.scss'
 })
 export class AddListComponent {
-  constructor(private router: Router, private quesTemp: NewQuest, private tabLink: ControlTabComponent) { }
+  constructor(private router: Router, private quesTemp: NewQuest, private tabLink: ControlTabComponent,private newQues : QuesStatus) { }
 
   //問卷名、問卷描述
   title !: string;
@@ -28,6 +29,10 @@ export class AddListComponent {
 
   //在頁面開啟時
   ngOnInit(): void {
+    //讓 tab 亮起來
+    this.tabLink.switchTab('/control_tab/add_list1')
+    //讓tab沒辦法被點選
+    this.tabLink.quesStatus(this.newQues.quesStatus)
     //grtMonth 回傳範圍 : 0 ~ 11 對應 1 ~ 12 月
     let monNum: number = this.toDay.getMonth() + 1;
     //getDate 回傳當日日期，日期小於10時會回傳單位數

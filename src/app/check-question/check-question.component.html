@@ -45,7 +45,7 @@
   @for (option of quest.options; track $index) {
   <div>
     <input type="checkbox">
-    {{ option}}
+    {{option.optionName}}
   </div><br>
 
   }
@@ -55,7 +55,7 @@
   <!-- radio注意要有name作為判斷這些radio是同一群組 -->
   <!-- value是選了這個選項對應的ngModel中的值 -->
   <input type="radio" name="{{quest.questId}}">
-  {{ option}}
+  {{option.optionName}}
   <br>
   }
   }
@@ -68,12 +68,9 @@
 
 <div style="text-align: right;">
   <!-- 返回鍵 -->
-  <button style="margin-right: 5px;" (click)="goBack()" >返回</button>
+  <button style="margin-right: 5px;" (click)="goBack()">返回</button>
   <!-- 僅存檔(不公布)鍵(返回list) -->
   <button (click)=" PubAndSaveData()">存檔並公布</button>
   <!-- 存檔並公布鍵(返回list) -->
   <button (click)="saveData()">僅存檔</button>
 </div><br>
-
-
-

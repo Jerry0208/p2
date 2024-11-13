@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LookAnserComponent {
   constructor(private router:Router) {}
+  // S 單選 , M 多選 , T 短述題
   ansesr = {
     userName:'王曉明',
     userPhone:'0933567895',

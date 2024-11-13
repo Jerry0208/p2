@@ -153,7 +153,7 @@ export class AnserPageRefreashComponent {
   }
 
   checkNeed(): boolean {
-    if (!this.userName || !this.userPhone) {
+    if (!this.userName || !this.userPhone || !this.userEmail) {
       alert('請確認必填皆有填寫');
       return false;
     };

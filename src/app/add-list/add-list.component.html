@@ -1,34 +1,39 @@
 <!-- 開始時間、結束時間 -->
-<div class="date d-flex justify-content-center">
-  <div class="steatDate">
-    <span>開始日期 : </span>
-    <input class="data_s" type="date" id="start" [value]="" min="{{defaultDate}}" [(ngModel)]="sDate"
-      (change)="sDateDetector()" />
+ <br><br>
+<div class="content">
+  <div class="date d-flex justify-content-center">
+    <div class="steatDate">
+      <span>開始日期 : </span>
+      <input class="data_s" type="date" id="start" [value]="" min="{{defaultDate}}" [(ngModel)]="sDate"
+        (change)="sDateDetector()" />
+    </div>
+    <div class="endDate">
+      <span>結束日期 : </span>
+      <input class="data_e" type="date" id="end" [value]="" [min]="sDate" [(ngModel)]="eDate" [disabled]="eDateMaker" />
+    </div>
   </div>
-  <div class="endDate">
-    <span>結束日期 : </span>
-    <input class="data_e" type="date" id="end" [value]="" [min]="sDate" [(ngModel)]="eDate" [disabled]="eDateMaker" />
+
+
+  <!-- 問卷名稱 -->
+  <div class="quesCss d-flex flex-column ">
+    <div class="questionName align-self-center">
+      <span style="margin-right: 5px;">問卷名稱:</span>
+      <input type="text" style="width:1200px" [(ngModel)]="title">
+    </div>
+
+    <!-- 問卷介紹 -->
+    <div class="questionDescribe d-flex align-self-center">
+      <span class="align-self-center" style="margin-right: 5px;">問卷描述:</span>
+      <textarea name="questionDescribe" id="" cols="147" rows="10" [(ngModel)]="explain"></textarea>
+    </div>
+
+    <br>
+    <div class="button d-flex justify-content-end">
+      <!-- 返回(取消)按鈕 -->
+      <button type="button" class="cancel" (click)="backList()">取消</button>
+
+      <!-- 前往製作問題內容畫面 -->
+      <button type="button" class="next" (click)="next()">下一步</button>
+    </div>
   </div>
-</div>
-
-
-<!-- 問卷名稱 -->
-<div class="questionName">
-  <span style="margin-right: 5px;">問卷名稱:</span>
-  <input type="text" style="width:1200px" [(ngModel)]="title">
-</div>
-
-<!-- 問卷介紹 -->
-<div class="questionDescribe d-flex">
-  <span class="align-self-center" style="margin-right: 5px;">問卷描述:</span>
-  <textarea name="questionDescribe" id="" cols="147" rows="10" [(ngModel)]="explain"></textarea>
-</div>
-
-
-<div class="button d-flex justify-content-end">
-  <!-- 返回(取消)按鈕 -->
-  <button type="button" class="cancel" (click)="backList()">取消</button>
-
-  <!-- 前往製作問題內容畫面 -->
-  <button type="button" class="next" (click)="next()">下一步</button>
 </div>

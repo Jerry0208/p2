@@ -1,95 +1,106 @@
+<br><br>
 <!-- 問卷題目 -->
-<span>題目:</span>
-<!-- 選擇題目類型 : 單選、多選、短述題 (確認問題內容是否有確實填寫) -->
-<input type="text" [(ngModel)]='questName'>
-<mat-form-field>
-  <mat-label>題型</mat-label>
-  <mat-select matNativeControl  [(ngModel)]='type'>
-    <!-- value如果是空值 ngModel 會吃空值  -->
-    <mat-option value="單選">單選</mat-option>
-    <mat-option value="多選">多選</mat-option>
-    <mat-option value="短述題">短述題</mat-option>
-  </mat-select>
-</mat-form-field>
-<!-- 是否為必選題 -->
-<label for="input">必選</label><input type="checkbox" value="need" [(ngModel)]="need">
-<br>
-<!-- 選項內容 -->
-@if(type == "單選" || type== "多選"){
-<span>選項:</span><span>(多個答案請以 ; 分割)</span>
-<br>
-<textarea name="questionText" rows="5" cols="60" [(ngModel)]='options'></textarea>
-}
-<!-- 加入Table按鍵 以是否為再編輯模式做更改-->
- @if(rewriteMode){
-  <input type="submit" value="加入" (click)="reAddRow()">
- }@else{
-   <input type="submit" value="加入" (click)="addRow()">
- }
-<br>
-<!-- 問卷預覽 : 問卷題目、問卷類型、題目數量、再編輯題目功能、刪除題目(+確認畫面) -->
-@if(!rewriteMode){
-<mat-icon aria-hidden="delete" fontIcon="delete" style="cursor: pointer;" (click)="deleteSelectedRows()"></mat-icon>
-}
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="contentCss">
+  <span>題目:</span>
+  <!-- 選擇題目類型 : 單選、多選、短述題 (確認問題內容是否有確實填寫) -->
+  <input type="text" [(ngModel)]='questName' style="width: 250px;">
+  <br><br>
+  <mat-form-field style="width: 250px; margin-left: 41px;">
+    <mat-label>題型</mat-label>
+    <mat-select matNativeControl [(ngModel)]='type'>
+      <!-- value如果是空值 ngModel 會吃空值  -->
+      <mat-option value="單選">單選</mat-option>
+      <mat-option value="多選">多選</mat-option>
+      <mat-option value="短述題">短述題</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <!-- 是否為必選題 -->
+  <label for="input" style="margin-left: 15px;">必選</label><input type="checkbox" value="need" [(ngModel)]="need">
+  <br>
+  <!-- 選項內容 -->
+  <div class="optionCss">
+    @if(type == "單選" || type== "多選"){
+    <mat-icon aria-hidden="delete" fontIcon="add" style="cursor: pointer;" (click)="autoArrayGenerate()"></mat-icon>
+    <div class="optionsBox d-flex  flex-column flex-wrap">
+      @for(options of optionsArray; track $index){
+      <div>
+        <mat-icon aria-hidden="delete" fontIcon="remove" style="cursor: pointer;"
+          (click)="deleteOption($index)"></mat-icon>
+        <input type="text" [placeholder]="$index + 1 + '.' " [(ngModel)]="optionsArray[$index]">
+      </div>
+      }
+    </div>
+    <!-- --------------------------------------------------------------------- -->
 
-  <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-        [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
+    }
+  </div>
+  <!-- 加入Table按鍵 以是否為再編輯模式做更改-->
+  <div class="addSubmitCss">
+    @if(rewriteMode){
+    <input type="submit" value="加入" (click)="reAddRow()">
+    }@else{
+    <input type="submit" value="加入" (click)="addRow()">
+    }
+  </div>
+  <div class="spaceCss"></div>
+  <!-- 問卷預覽 : 問卷題目、問卷類型、題目數量、再編輯題目功能、刪除題目(+確認畫面) -->
+  @if(!rewriteMode){
+  <mat-icon aria-hidden="delete" fontIcon="delete" style="cursor: pointer;" (click)="deleteSelectedRows()"></mat-icon>
+  }
+  <br>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-  <!-- id  Column-->
-  <ng-container matColumnDef="questId">
-    <th mat-header-cell *matHeaderCellDef> 編號 </th>
-    <td mat-cell *matCellDef="let element"> {{element.questId}} </td>
-  </ng-container>
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
 
-  <!-- name Column -->
-  <ng-container matColumnDef="questName">
-    <th mat-header-cell *matHeaderCellDef> 題目 </th>
-    <td mat-cell *matCellDef="let element">{{element.questName}}</td>
-  </ng-container>
+    <!-- id  Column-->
+    <ng-container matColumnDef="questId">
+      <th mat-header-cell *matHeaderCellDef> 編號 </th>
+      <td mat-cell *matCellDef="let element"> {{element.questId}} </td>
+    </ng-container>
 
-  <!-- type Column -->
-  <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef> 類型 </th>
-    <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-  </ng-container>
+    <!-- name Column -->
+    <ng-container matColumnDef="questName">
+      <th mat-header-cell *matHeaderCellDef> 題目 </th>
+      <td mat-cell *matCellDef="let element">{{element.questName}}</td>
+    </ng-container>
 
-  <!-- options Column -->
-  <!--   -->
-  <ng-container matColumnDef="options">
-    <th mat-header-cell *matHeaderCellDef> 選項 </th>
-    <td mat-cell *matCellDef="let element"> {{element.options}}</td>
-  </ng-container>
+    <!-- type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> 類型 </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
 
-  <!-- requied Column -->
-  <ng-container matColumnDef="need">
-    <th mat-header-cell *matHeaderCellDef> 必填 </th>
-    <td mat-cell *matCellDef="let element"><mat-checkbox [(ngModel)]="element.need"></mat-checkbox></td>
-  </ng-container>
 
-  <!-- rewrite Column-->
-  <ng-container matColumnDef="rewrite">
-    <th mat-header-cell *matHeaderCellDef> 編輯 </th>
-    <td mat-cell *matCellDef="let element"> <input type="button" value="再編輯" (click)="rewrite(element)"> </td>
-  </ng-container>
+    <!-- requied Column -->
+    <ng-container matColumnDef="need">
+      <th mat-header-cell *matHeaderCellDef> 必填 </th>
+      <td mat-cell *matCellDef="let element"><mat-checkbox [(ngModel)]="element.need"></mat-checkbox></td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+    <!-- rewrite Column-->
+    <ng-container matColumnDef="rewrite">
+      <th mat-header-cell *matHeaderCellDef> 編輯 </th>
+      <td mat-cell *matCellDef="let element"> <input type="button" value="再編輯" [disabled]='rewriteMode'  (click)="rewrite(element)"> </td>
+    </ng-container>
 
-<input type="button" value="上一步" (click)="backAddList1()">
-<input type="submit" value="預覽" (click)="toCheck()">
-
-<!-- 取消畫面(+確認畫面)-->
-
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <br>
+  <div class="d-flex justify-content-end">
+    <input type="button" value="上一步" (click)="backAddList1()" style="margin-right: 30px;">
+    <input type="submit" value="預覽" (click)="toCheck()">
+  </div>
+</div>

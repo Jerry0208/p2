@@ -1,4 +1,4 @@
-import { FormsModule,} from '@angular/forms'
+import { FormsModule, } from '@angular/forms'
 import { MatSelectModule } from '@angular/material/select';//selcet
 import { MatIconModule } from '@angular/material/icon';//Icon
 import { MatTableDataSource, MatTableModule } from '@angular/material/table'; // Table
@@ -14,7 +14,6 @@ export interface questionTemp {
   questName: string;
   need: boolean;
   type: string;
-  options: Array<string>;
 }
 
 @Component({
@@ -34,8 +33,33 @@ export interface questionTemp {
 
 
 export class AddList2Component {
-  constructor(private router: Router, private newQuest: NewQuest, private tabLink: ControlTabComponent,private quesTemp: NewQuest) { }
 
+  constructor(private router: Router, private newQuest: NewQuest, private tabLink: ControlTabComponent, private quesTemp: NewQuest) { }
+
+
+  //接資料 ngModle
+  questId: number = 0;
+  questName !: string;
+  need: boolean = false;
+  type !: string;
+  options: string = '';
+  //選擇題陣列
+  optionsArray : Array<string> = [];
+
+  autoArrayGenerate(){
+    this.optionsArray.push('')
+  }
+
+  deleteOption(index:number){
+    this.optionsArray.splice(index,1)
+  }
+
+
+  //table
+  displayedColumns: string[] = ['select', 'questId', 'questName', 'type', 'need', 'rewrite'];
+  dataSource = new MatTableDataSource<questionTemp>();
+  //table selection
+  selection = new SelectionModel<questionTemp>(true, []);
 
   ngOnInit(): void {
     this.tabLink.switchTab('/control_tab/add_list2')
@@ -49,21 +73,6 @@ export class AddList2Component {
     }
   }
 
-
-  //table
-  displayedColumns: string[] = ['select', 'questId', 'questName', 'type', 'options', 'need', 'rewrite'];
-  dataSource = new MatTableDataSource<questionTemp>();
-  //table selection
-  selection = new SelectionModel<questionTemp>(true, []);
-
-  //接資料 ngModle
-  questId: number = 0;
-  questName !: string;
-  need: boolean = false;
-  type !: string;
-  options: string = '';
-
-
   //以下註解有英文的都不是很懂，要問老師。考察:類似沒全選時全選 跟 全選時取消全選
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -75,8 +84,8 @@ export class AddList2Component {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   toggleAllRows() {
     this.isAllSelected() ?
-    this.selection.clear() :
-    this.dataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
@@ -116,22 +125,24 @@ export class AddList2Component {
       return
     }
 
-    //.replace(/\s/g, "") 去除空白建,再以.split(";")分割
-    let options = this.options.replace(' ', "").split(";");
+
+    //將陣列內的內容依序取出，做成JSON個後加入 optionsArray 陣列中
+    let optionsArray: any[] = [];
+    for (let i = 0; i < this.optionsArray.length; i++) {
+      let toJSON = { optionName: this.optionsArray[i] }
+      optionsArray.push(toJSON)
+    }
+
     //questId 增加
     this.questId += 1;
     //將newQues 放入 Table 內
-    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: options };
-
-    //失敗 可能要問老師
-    // ELEMENT_DATA.push(newQues)
-    // this.dataSource = ELEMENT_DATA
+    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: optionsArray };
 
     this.dataSource.data = [...this.dataSource.data, newQues];
     this.questName = '';
     this.type = '';
     this.need = false;
-    this.options = '';
+    this.optionsArray = [];
 
   }
 
@@ -148,11 +159,7 @@ export class AddList2Component {
     // ''+ = .toString方法，之後把變成陣列的,換成;
 
     for (let i = 0; i < element.options.length; i++) {
-      if (i == element.options.length - 1) {
-        this.options += element.options[i];
-      } else {
-        this.options += element.options[i] + ';';
-      }
+      this.optionsArray.push(element.options[i].optionName)
     }
 
     this.rewriteMode = true;
@@ -167,15 +174,17 @@ export class AddList2Component {
       return
     }
 
-    //.replace(/\s/g, "") 去除空白建,再以.split(";")分割
-    let options = this.options.replace(/\s/g, "").split(";");
+    //將陣列內的內容依序取出，做成JSON個後加入 optionsArray 陣列中
+    let optionsArray: any[] = [];
+    for (let i = 0; i < this.optionsArray.length; i++) {
+      let toJSON = { optionName: this.optionsArray[i] }
+      optionsArray.push(toJSON)
+    }
 
     //將newQues 放入 Table 內
-    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: options };
+    let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: optionsArray };
 
-    //失敗 可能要問老師
-    // ELEMENT_DATA.push(newQues)
-    // this.dataSource = ELEMENT_DATA
+    //將原本那一份資料刪除
     this.dataSource.data = this.dataSource.data.filter(data => !(data.questId == (this.questId)));
     //將數據放入Table內
     this.dataSource.data = [...this.dataSource.data, newQues];
@@ -186,7 +195,7 @@ export class AddList2Component {
     this.questName = '';
     this.type = '';
     this.need = false;
-    this.options = '';
+    this.optionsArray = [];
     this.questId = this.dataSource.data.length;
     this.rewriteMode = false;
   }
@@ -222,8 +231,8 @@ export class AddList2Component {
     }
 
     if (this.type != '短述題') {
-      if (!this.options) {
-        alert('請填寫題目內容')
+      if (!this.optionsArray[0]) {
+        alert('請填寫題目選項')
         return true
       }
     }
@@ -239,10 +248,11 @@ export class AddList2Component {
   }
 
   toCheck() {
-    console.log(this.dataSource.data);
+    if(this.dataSource.data.length == 0){
+      alert('請填寫問卷內容')
+      return
+    }
     this.newQuest.questArray = this.dataSource.data;
-    console.log(this.newQuest);
-
     this.router.navigateByUrl('/check_question')
   }
 

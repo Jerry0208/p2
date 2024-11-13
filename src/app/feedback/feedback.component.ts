@@ -6,6 +6,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ControlTabComponent } from '../control-tab/control-tab.component';
+import { QuesStatus } from '../service/quesStatus.service';
 
 
 export interface answerTemp {
@@ -30,6 +32,15 @@ export interface answerTemp {
   styleUrl: './feedback.component.scss'
 })
 export class FeedbackComponent implements AfterViewInit {
+
+  constructor( private tabLink : ControlTabComponent,private quesStatus: QuesStatus) {}
+
+  ngOnInit(): void {
+    // 讓tab標籤亮起來
+    this.tabLink.switchTab('/control_tab/feedback')
+    this.tabLink.quesStatus(this.quesStatus.quesStatus)
+  }
+
 
   //假資料
   listData: answerTemp[] = [

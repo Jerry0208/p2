@@ -48,13 +48,13 @@ export class CheckQuestionComponent {
   PubAndSaveData(){
     alert('存檔並公布成功!')
     this.ques.reset();
-    this.router.navigateByUrl('/lsit');
+    this.router.navigateByUrl('/list');
   }
 
   saveData(){
     alert('僅存檔成功!')
     this.ques.reset();
-    this.router.navigateByUrl('/lsit');
+    this.router.navigateByUrl('/list');
   }
 
 }

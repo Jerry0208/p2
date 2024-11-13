@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';//icon
 import { MatPaginator } from '@angular/material/paginator';//list換頁用
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';// table
 import { RouterLink, RouterLinkActive } from '@angular/router';//router
+import { QuesStatus } from '../service/quesStatus.service';
 
 
 export interface PeriodicElement {
@@ -21,7 +22,16 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, FormsModule, MatTableModule, MatPaginator, MatIconModule, CommonModule, MatCheckboxModule],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    FormsModule,
+    MatTableModule,
+    MatPaginator,
+    MatIconModule,
+    CommonModule,
+    MatCheckboxModule,
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -30,6 +40,7 @@ export interface PeriodicElement {
 
 export class ListComponent implements AfterViewInit {
 
+  constructor(private quesStatus: QuesStatus) { }
   //日期選擇範圍
   startDate: string = ""
   endDate: string = ""
@@ -120,10 +131,6 @@ export class ListComponent implements AfterViewInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  //在console log 內把選取到的名子取出
-  logSelection() {
-    this.selection.selected.forEach(s => console.log(s.name));
-  }
 
   selection = new SelectionModel<PeriodicElement>(true, []);
 
@@ -166,17 +173,17 @@ export class ListComponent implements AfterViewInit {
     }
   }
 
-    //刪除列表
-    deleteSelectedRows() {
-      // 濾除被選取的資料列
-      this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
+  //刪除列表
+  deleteSelectedRows() {
+    // 濾除被選取的資料列
+    this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
 
-      // 更新 dataSource.data
-      this.dataSource.data = this.dataSource.data;
+    // 更新 dataSource.data
+    this.dataSource.data = this.dataSource.data;
 
-      // 清除選取狀態
-      this.selection.clear();
-    }
+    // 清除選取狀態
+    this.selection.clear();
+  }
 
 
   //模糊搜尋:只能搜尋到由API接過來的資料，沒辦法搜尋到資料庫所有資料
@@ -208,8 +215,16 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.data = data
   }
 
+  //取得問卷狀態，依狀態讓問卷可編輯或是不可編輯
+  status(element: any) {
+    this.quesStatus.quesStatus = element.status
+  }
+  addQues() {
+    this.quesStatus.quesStatus = 'new'
+  }
+
   //取得問卷資訊(之後要傳到後台)
-  quesInfo(element: Element) {
+  quesInfo(element: any) {
     console.log(element);
   }
 
