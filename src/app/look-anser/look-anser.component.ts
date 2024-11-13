@@ -17,6 +17,7 @@ export class LookAnserComponent {
     userEmail:'abc123@gmail.com',
     userAge:'25',
     anserId: 1,
+    id:1,
     title: '範例問卷標題',
     sDate: '2024/10/01',
     eDate: '2024/12/25',

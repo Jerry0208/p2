@@ -96,13 +96,35 @@ export class AddList2Component {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.questId + 1}`;
   }
 
+  //當從選擇題變成短述題時將this.optionsArray(選擇題欄位)清空
+  resetQuest(){
+    if(this.type == 'T'){
+      this.optionsArray = [];
+    }
+  }
+
+  //將類型的英文單字變成中文單選(S)、複選(M)、短述(T)
+  changeTypeName(type :string){
+    if(type == 'S'){
+      return '單選題'
+    }
+
+    if(type == 'M'){
+      return '複選題'
+    }
+
+    if(type == 'T'){
+       return '短述題'
+    }else{
+      return
+    }
+  }
+
   //刪除列表
   deleteSelectedRows() {
     // 濾除被選取的資料列
     this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
 
-    // 更新 dataSource.data
-    this.dataSource.data = this.dataSource.data;
     // 清除選取狀態
     this.selection.clear();
 
@@ -125,11 +147,10 @@ export class AddList2Component {
       return
     }
 
-
     //將陣列內的內容依序取出，做成JSON個後加入 optionsArray 陣列中
     let optionsArray: any[] = [];
     for (let i = 0; i < this.optionsArray.length; i++) {
-      let toJSON = { optionName: this.optionsArray[i] }
+      let toJSON = { optionName: this.optionsArray[i] ,code : String.fromCharCode(65 + i)}
       optionsArray.push(toJSON)
     }
 
@@ -139,6 +160,7 @@ export class AddList2Component {
     let newQues = { questId: this.questId, questName: this.questName, need: this.need, type: this.type, options: optionsArray };
 
     this.dataSource.data = [...this.dataSource.data, newQues];
+
     this.questName = '';
     this.type = '';
     this.need = false;
@@ -162,7 +184,11 @@ export class AddList2Component {
       this.optionsArray.push(element.options[i].optionName)
     }
 
+    //在開啟編輯模式
     this.rewriteMode = true;
+
+    // 清除選取狀態
+    this.selection.clear();
 
   }
 
@@ -230,7 +256,7 @@ export class AddList2Component {
       return true
     }
 
-    if (this.type != '短述題') {
+    if (this.type != 'T') {
       if (!this.optionsArray[0]) {
         alert('請填寫題目選項')
         return true

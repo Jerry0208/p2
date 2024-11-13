@@ -7,11 +7,11 @@
   <br><br>
   <mat-form-field style="width: 250px; margin-left: 41px;">
     <mat-label>題型</mat-label>
-    <mat-select matNativeControl [(ngModel)]='type'>
+    <mat-select matNativeControl [(ngModel)]='type'  (ngModelChange)="resetQuest()">
       <!-- value如果是空值 ngModel 會吃空值  -->
-      <mat-option value="單選">單選</mat-option>
-      <mat-option value="多選">多選</mat-option>
-      <mat-option value="短述題">短述題</mat-option>
+      <mat-option value="S">單選</mat-option>
+      <mat-option value="M">多選</mat-option>
+      <mat-option value="T">短述題</mat-option>
     </mat-select>
   </mat-form-field>
   <!-- 是否為必選題 -->
@@ -19,7 +19,7 @@
   <br>
   <!-- 選項內容 -->
   <div class="optionCss">
-    @if(type == "單選" || type== "多選"){
+    @if(type == "S" || type== "M"){
     <mat-icon aria-hidden="delete" fontIcon="add" style="cursor: pointer;" (click)="autoArrayGenerate()"></mat-icon>
     <div class="optionsBox d-flex  flex-column flex-wrap">
       @for(options of optionsArray; track $index){
@@ -79,7 +79,7 @@
     <!-- type Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> 類型 </th>
-      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      <td mat-cell *matCellDef="let element"> {{changeTypeName(element.type)}} </td>
     </ng-container>
 
 

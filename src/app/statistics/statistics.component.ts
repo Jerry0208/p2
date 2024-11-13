@@ -1,3 +1,4 @@
+import { QuesStatus } from './../service/quesStatus.service';
 import { Component } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { Router } from '@angular/router';
@@ -12,10 +13,17 @@ import { ChartComponent } from './chart/chart.component';
 })
 export class StatisticsComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private quesStatus:QuesStatus) { }
 
+  //把原本在統計畫面上的返回畫面藏起來
+  hideBackButton !: boolean;
+  test:string = ''
   ngOnInit(): void {
-    this.test()
+    if(this.quesStatus.hideBackButton){
+      this.hideBackButton =  true
+    }else{
+      this.hideBackButton = false
+    }
   }
 
   // S 單選 , M 多選 , T 短述題
@@ -80,39 +88,45 @@ export class StatisticsComponent {
 
   // --------------------------------------------------------------
 
-  test() {
-    // 獲取 canvas 元素
-    let ctx = document.getElementById('chart') as HTMLCanvasElement;
 
-    // 設定數據
-    let data = {
-      // x 軸文字
-      labels: ['餐費', '交通費', '租金'],
-      datasets: [
-        {
-          // 上方分類文字
-          label: '支出比',
-          // 數據
-          data: [12000, 3000, 9000],
-          // 線與邊框顏色
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)',
-          ],
-          //設定hover時的偏移量，滑鼠移上去表會偏移，方便觀看選種的項目
-          hoverOffset: 4,
-        },
-      ],
-    };
+//     ngOnInit(): void {
+//       this.test()
 
-    // 創建圖表
-    let chart = new Chart(ctx, {
-      //pie是圓餅圖,doughnut是環狀圖
-      type: 'pie',
-      data: data,
-    });
 
-  }
+//     }
+//   test() {
+//     // 獲取 canvas 元素
+//     let ctx = document.getElementById('chart') as HTMLCanvasElement;
+
+//     // 設定數據
+//     let data = {
+//       // x 軸文字
+//       labels: ['餐費', '交通費', '租金'],
+//       datasets: [
+//         {
+//           // 上方分類文字
+//           label: '支出比',
+//           // 數據
+//           data: [12000, 3000, 9000],
+//           // 線與邊框顏色
+//           backgroundColor: [
+//             'rgb(255, 99, 132)',
+//             'rgb(54, 162, 235)',
+//             'rgb(255, 205, 86)',
+//           ],
+//           //設定hover時的偏移量，滑鼠移上去表會偏移，方便觀看選種的項目
+//           hoverOffset: 4,
+//         },
+//       ],
+//     };
+
+//     // 創建圖表
+//     let chart = new Chart(ctx, {
+//       //pie是圓餅圖,doughnut是環狀圖
+//       type: 'pie',
+//       data: data,
+//     });
+
+//   }
 
 }

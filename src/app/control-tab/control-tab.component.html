@@ -6,7 +6,7 @@
   @for (link of links; track link) {
     <a mat-tab-link
       (click)="switchTab(link.path)"
-      [disabled]='link.stuts'
+      [disabled]='link.hide'
       [routerLink]="link.path"
       [active]="activeLink == link.path"> {{link.name}} </a>
   }

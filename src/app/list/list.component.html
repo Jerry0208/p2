@@ -66,17 +66,17 @@
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
+    <!-- title Column -->
+    <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>問卷名稱</th>
       <td mat-cell *matCellDef="let element">
         @if (mode) {
         <a routerLink="/control_tab/feedback" routerLinkActive="active" (click)="status(element)">
-          {{element.name}}</a>
+          {{element.title}}</a>
         }@else{
         @if (element.status == "進行中") {<a routerLink="/new_anwser_page" routerLinkActive="active"
-          (click)="quesInfo(element)"> {{element.name}} </a> }
-        @else { {{element.name}} }
+          (click)="quesInfo(element)"> {{element.title}} </a> }
+        @else { {{element.title}} }
         }
       </td>
     </ng-container>
@@ -104,7 +104,7 @@
       <th mat-header-cell *matHeaderCellDef>結果</th>
       <td mat-cell *matCellDef="let element">
         @if ( element.status == '進行中' || element.status == '已結束')
-        { <a routerLink="/statistics">
+        { <a routerLink="/statistics" (click)="showBackButton()">
           <mat-icon aria-hidden="false" fontIcon="chevron_right" style="cursor: pointer;"></mat-icon>
          </a> }
          @else { 統計中 } </td>

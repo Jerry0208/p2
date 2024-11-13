@@ -12,7 +12,7 @@ import { QuesStatus } from '../service/quesStatus.service';
 
 export interface PeriodicElement {
   id: number;
-  name: string;
+  title: string;
   status: string;
   sDate: string;
   eDate: string;
@@ -51,69 +51,69 @@ export class ListComponent implements AfterViewInit {
   //假資料
   listData: PeriodicElement[] = [
     {
-      id: 1, name: "市場調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
+      id: 1, title: "市場調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
     },
     {
-      id: 2, name: "市場調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
+      id: 2, title: "市場調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
     },
     {
-      id: 3, name: "市場調查03", status: "進行中", sDate: "2024-07-01", eDate: "2024-10-30",
+      id: 3, title: "市場調查03", status: "進行中", sDate: "2024-07-01", eDate: "2024-10-30",
     },
     {
-      id: 4, name: "價格調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
+      id: 4, title: "價格調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
     },
     {
-      id: 5, name: "價格調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
+      id: 5, title: "價格調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
     },
     {
-      id: 6, name: "價格調查03", status: "尚未開始", sDate: "2024-11-01", eDate: "2024-12-31",
+      id: 6, title: "價格調查03", status: "尚未開始", sDate: "2024-11-01", eDate: "2024-12-31",
     },
     {
-      id: 7, name: "興趣調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
+      id: 7, title: "興趣調查01", status: "已結束", sDate: "2024-01-01", eDate: "2024-03-31",
     },
     {
-      id: 8, name: "興趣調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
+      id: 8, title: "興趣調查02", status: "已結束", sDate: "2024-04-01", eDate: "2024-06-30",
     },
     {
-      id: 9, name: "興趣調查03", status: "尚未公布", sDate: "2024-11-01", eDate: "2024-12-31",
+      id: 9, title: "興趣調查03", status: "尚未公布", sDate: "2024-11-01", eDate: "2024-12-31",
     },
     {
-      id: 10, name: "年度調查01", status: "進行中", sDate: "2024-07-01", eDate: "2024-10-30"
+      id: 10, title: "年度調查01", status: "進行中", sDate: "2024-07-01", eDate: "2024-10-30"
     },
     {
-      id: 11, name: "市場調查04", status: "進行中", sDate: "2024-10-15", eDate: "2025-01-15",
+      id: 11, title: "市場調查04", status: "進行中", sDate: "2024-10-15", eDate: "2025-01-15",
     },
     {
-      id: 12, name: "價格調查04", status: "已結束", sDate: "2024-05-01", eDate: "2024-07-31",
+      id: 12, title: "價格調查04", status: "已結束", sDate: "2024-05-01", eDate: "2024-07-31",
     },
     {
-      id: 13, name: "市場分析01", status: "進行中", sDate: "2024-09-01", eDate: "2024-12-31",
+      id: 13, title: "市場分析01", status: "進行中", sDate: "2024-09-01", eDate: "2024-12-31",
     },
     {
-      id: 14, name: "興趣調查04", status: "尚未開始", sDate: "2025-01-01", eDate: "2025-03-31",
+      id: 14, title: "興趣調查04", status: "尚未開始", sDate: "2025-01-01", eDate: "2025-03-31",
     },
     {
-      id: 15, name: "市場趨勢01", status: "已結束", sDate: "2023-11-01", eDate: "2024-01-31",
+      id: 15, title: "市場趨勢01", status: "已結束", sDate: "2023-11-01", eDate: "2024-01-31",
     },
     {
-      id: 16, name: "年度調查02", status: "進行中", sDate: "2024-08-01", eDate: "2024-12-31",
+      id: 16, title: "年度調查02", status: "進行中", sDate: "2024-08-01", eDate: "2024-12-31",
     },
     {
-      id: 17, name: "需求調查01", status: "尚未開始", sDate: "2025-02-01", eDate: "2025-04-30",
+      id: 17, title: "需求調查01", status: "尚未開始", sDate: "2025-02-01", eDate: "2025-04-30",
     },
     {
-      id: 18, name: "價格趨勢01", status: "進行中", sDate: "2024-09-01", eDate: "2024-12-01",
+      id: 18, title: "價格趨勢01", status: "進行中", sDate: "2024-09-01", eDate: "2024-12-01",
     },
     {
-      id: 19, name: "年度調查03", status: "尚未開始", sDate: "2025-01-01", eDate: "2025-04-30",
+      id: 19, title: "年度調查03", status: "尚未開始", sDate: "2025-01-01", eDate: "2025-04-30",
     },
     {
-      id: 20, name: "市場調查05", status: "進行中", sDate: "2024-10-01", eDate: "2025-01-01",
+      id: 20, title: "市場調查05", status: "進行中", sDate: "2024-10-01", eDate: "2025-01-01",
     }
   ];
 
   //table名、table資料來源
-  displayedColumns: string[] = ['id', 'name', 'status', 'sDate', 'eDate', 'statistics'];
+  displayedColumns: string[] = ['id', 'title', 'status', 'sDate', 'eDate', 'statistics'];
   dataSource = new MatTableDataSource<PeriodicElement>(this.listData);
 
   //table check box
@@ -150,11 +150,11 @@ export class ListComponent implements AfterViewInit {
 
   masterMode() {
     this.mode = true
-    this.displayedColumns = ['select', 'id', 'name', 'status', 'sDate', 'eDate', 'statistics']
+    this.displayedColumns = ['select', 'id', 'title', 'status', 'sDate', 'eDate', 'statistics']
   }
   normalMode() {
     this.mode = false
-    this.displayedColumns = ['id', 'name', 'status', 'sDate', 'eDate', 'statistics']
+    this.displayedColumns = ['id', 'title', 'status', 'sDate', 'eDate', 'statistics']
   }
 
   //讓按鍵換色
@@ -193,7 +193,7 @@ export class ListComponent implements AfterViewInit {
     // as HTMLInputElement 轉型，之後才能使用.value
     // console.log((event.target as HTMLInputElement).value)
     this.listData.forEach((res) => {
-      if (res.name.indexOf((event.target as HTMLInputElement).value) != -1) {
+      if (res.title.indexOf((event.target as HTMLInputElement).value) != -1) {
         data.push(res)
       }
     });
@@ -207,7 +207,7 @@ export class ListComponent implements AfterViewInit {
   seachNameButton() {
     let data: PeriodicElement[] = []
     this.listData.forEach((res) => {
-      if (res.name.indexOf(this.seachName) != -1) {
+      if (res.title.indexOf(this.seachName) != -1) {
         data.push(res)
       }
     });
@@ -215,9 +215,14 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.data = data
   }
 
-  //取得問卷狀態，依狀態讓問卷可編輯或是不可編輯
+  showBackButton(){
+    this.quesStatus.hideBackButton = true
+  }
+
   status(element: any) {
+    //取得問卷狀態，依狀態讓問卷可編輯或是不可編輯
     this.quesStatus.quesStatus = element.status
+    this.quesStatus.hideBackButton = false
   }
   addQues() {
     this.quesStatus.quesStatus = 'new'

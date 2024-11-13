@@ -56,7 +56,6 @@ export class AddListComponent {
     // <input  type : date> 接收日期格式 : yyyy-mm-dd
     this.defaultDate = this.toDay.getFullYear() + "-" + monStr + "-" + dateStr;
 
-    console.log(this.quesTemp);
     //判定是否為修改問卷
     this.reset()
 
