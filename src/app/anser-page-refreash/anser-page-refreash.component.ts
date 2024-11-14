@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';//OnDestroy、HostListener監測是否網站是否重新整理
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';// ngmodle
 import { SurveyService } from '../service/survey.service';//傳遞資料到預覽畫面
 import { Router } from '@angular/router';//前往下一個畫面用
-
 
 // 參考老師的 Code 改寫
 
@@ -28,6 +27,17 @@ export class AnserPageRefreashComponent {
   userPhone!: string;
   userEmail!: string;
   userAge!: string;
+
+  // 是否有未保存的變更
+  hasUnsavedChanges = true;
+
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.hasUnsavedChanges) {
+      // 如果有未保存變更，阻止重新整理，顯示預設訊息
+      event.preventDefault();
+    }
+  }
 
   // 多選:M 單選:S 文字輸入:T
   quest = {

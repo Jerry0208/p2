@@ -9,12 +9,15 @@
   </div>
   <div>
     <div>
+      <span style="color: red;">*</span>
       <label>名稱 : {{quest.userName}} </label>
     </div><br>
     <div>
+      <span style="color: red;">*</span>
       <label>手機 : {{quest.userPhone}}</label>
     </div><br>
     <div>
+      <span style="color: red;">*</span>
       <label>信箱 :{{quest.userEmail}} </label>
     </div><br>
     <div>
@@ -23,15 +26,17 @@
   </div>
   <div>
     @for (answer of quest.questArray; track $index) {
-    <span>{{answer.questId}}. {{answer.questName}} </span>
-    @if (answer.type == 'M') {
-    @for (option of answer.options; track $index) {
-    @if (option.boxBoolean) {
-    <br>
-    <span>{{option.optionName}}</span>
-    }
-    }
-    }
+    <hr>
+    <h5>{{answer.questId}}. {{answer.questName}} </h5>
+    <div class="d-flex flex-wrap justify-content-start">
+      @if (answer.type == 'M') {
+      @for (option of answer.options; track $index) {
+      @if (option.boxBoolean) {
+      <span>●{{option.optionName}}</span>
+      }
+      }
+      }
+    </div>
     @if (answer.type == "S") {
     @for (answerS of answer.options; track $index) {
     @if(answerS.code == answer.radioAnswer){
@@ -40,11 +45,14 @@
     }
     }
     }
-    @if (answer.type == "T") {
-    <br>
-    <span> {{answer.answer}} </span>
-    }
-    <br>
+
+    <div class="d-flex flex-wrap justify-content-start">
+      @if (answer.type == "T") {
+      <br>
+      <span> {{answer.answer}} </span>
+      }
+      <br>
+    </div>
     }
   </div>
   <!-- 確認後將資料傳至資料庫 -->

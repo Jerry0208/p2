@@ -42,11 +42,17 @@ export class ListComponent implements AfterViewInit {
 
   constructor(private quesStatus: QuesStatus) { }
   //日期選擇範圍
-  startDate: string = ""
-  endDate: string = ""
+  startDate: string = "";
+  endDate: string = "";
+
+  //搜索問卷名稱
+  seachName: string = ""
 
   //管理者模式
   mode: boolean = false;
+
+  //搜索問卷狀態
+  statu: string = "";
 
   //假資料
   listData: PeriodicElement[] = [
@@ -178,9 +184,6 @@ export class ListComponent implements AfterViewInit {
     // 濾除被選取的資料列
     this.dataSource.data = this.dataSource.data.filter(row => !this.selection.isSelected(row));
 
-    // 更新 dataSource.data
-    this.dataSource.data = this.dataSource.data;
-
     // 清除選取狀態
     this.selection.clear();
   }
@@ -201,21 +204,53 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.data = data
   }
 
+  //讓radio可以取消選取
+  canceChoice() {
+
+  }
 
   //按鈕搜尋 By ngMoudle
-  seachName: string = ""
   seachNameButton() {
     let data: PeriodicElement[] = []
-    this.listData.forEach((res) => {
-      if (res.title.indexOf(this.seachName) != -1) {
-        data.push(res)
+    let statuSeach: boolean = false
+
+    //狀態搜尋
+    if (this.statu) {
+      data = this.listData.filter((res) => {
+        return res.status == this.statu
+      });
+      statuSeach = true;
+
+      //table吃的資料dataSource
+
+    }
+
+    //名稱搜尋
+    if (statuSeach) {
+      let data2: PeriodicElement[] = []
+
+      for (let i = 0; i < data.length; i++) {
+
+        data.forEach((res) => {
+          if (res.title.indexOf(this.seachName) != -1) {
+            data2.push(res)
+          }
+        })
+        this.dataSource.data = data2
+        return
+
       }
-    });
-    //table吃的資料dataSource
+    } else {
+      this.listData.forEach((res) => {
+        if (res.title.indexOf(this.seachName) != -1) {
+          data.push(res)
+        }
+      });
+    }
     this.dataSource.data = data
   }
 
-  showBackButton(){
+  showBackButton() {
     this.quesStatus.hideBackButton = true
   }
 
